@@ -241,6 +241,9 @@ static const struct soc_enum msm8994_auxpcm_enum[] = {
 };
 
 static void *adsp_state_notifier;
+
+extern void tfa98xx_play_stop(void);
+
 static void *def_codec_mbhc_cal(void);
 static int msm_snd_enable_codec_ext_clk(struct snd_soc_codec *codec,
 					int enable, bool dapm);
@@ -1791,6 +1794,15 @@ err:
  
 	 pr_debug("%s: substream = %s  stream = %d\n", __func__,
 		 substream->name, substream->stream);
+
+    	tfa98xx_play_stop();
+		if (atomic_dec_return(&msm_mi2s_data->mi2s_rsc_ref) == 0) {
+			msm_mi2s_data->mi2s_clk.enable = 0;
+			pr_debug("%s: Disabling bit-clk\n", __func__);
+			ret = afe_set_lpass_clock_v2(port_id, &msm_mi2s_data->mi2s_clk);
+			if (ret < 0)
+				pr_err("%s: afe lpass clock failed, err:%d\n",
+				__func__, ret);
  
 	 mi2s_tx_clk.clk_val1 = Q6AFE_LPASS_IBIT_CLK_DISABLE;
 	 mi2s_tx_clk.clk_set_mode = Q6AFE_LPASS_MODE_CLK1_VALID;
@@ -4150,6 +4162,7 @@ struct snd_soc_card snd_soc_card_msm8994 = {
 	.name		= "msm8994-tomtom-snd-card",
 };
 
+extern struct device_node *tfa_codec_np;
 static int msm8994_populate_dai_link_component_of_node(
 					struct snd_soc_card *card)
 {
@@ -4211,6 +4224,20 @@ static int msm8994_populate_dai_link_component_of_node(
 				dai_link[i].cpu_dai_name = NULL;
 			}
 		}
+
+		if(!strcmp(dai_link[i].codec_name, "tfa98xx.3-0036"))
+        {
+            pr_err("%s codec_name=%s\n",__func__,dai_link[i].codec_name);
+            if (dai_link[i].codec_name && !dai_link[i].codec_of_node)
+            {
+               if(tfa_codec_np != NULL)
+                {
+                    dai_link[i].codec_of_node = tfa_codec_np;
+                    dai_link[i].codec_name = NULL;
+                }
+            }
+            continue;
+	}
 
 		/* populate codec_of_node for snd card dai links */
 		if (dai_link[i].codec_name && !dai_link[i].codec_of_node) {
