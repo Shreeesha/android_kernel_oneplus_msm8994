@@ -71,6 +71,9 @@ static int test =0;
 struct tfa98xx *g_tfa98xx = NULL;
 EXPORT_SYMBOL_GPL(g_tfa98xx);
 
+//su
+struct device_node *tfa_codec_np = NULL;
+EXPORT_SYMBOL_GPL(tfa_codec_np);
 
 #ifdef VENDOR_EDIT
 /* zhiguang.su@MultiMedia.AudioDrv on 2015-05-29, add for smart pa calibtation*/

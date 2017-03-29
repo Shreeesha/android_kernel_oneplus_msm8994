@@ -72,6 +72,7 @@ struct tfa98xx {
 	int profile_count;
 	int has_drc;
 	int rate;
+	struct work_struct stop_work;
 #ifdef VENDOR_EDIT
 /* zhiguang.su@MultiMedia.AudioDrv on 2015-07-11,change for wave profile */
     int WaveEnable;
