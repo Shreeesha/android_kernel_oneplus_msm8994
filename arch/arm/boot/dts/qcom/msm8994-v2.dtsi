@@ -292,7 +292,7 @@
 
 /* GPU overrides */
 &msm_gpu {
-	qcom,initial-pwrlevel = <6>;
+	qcom,initial-pwrlevel = <7>;
 	qcom,msm-bus,num-cases = <10>;
 	qcom,msm-bus,vectors-KBps =
 		<26 512 0 0>,
@@ -361,13 +361,25 @@
 		};
 		qcom,gpu-pwrlevel@6 {
 			reg = <6>;
+			qcom,gpu-freq = <100000000>;
+			qcom,bus-freq = <1>;
+			qcom,bus-min = <1>;
+			qcom,bus-max = <2>;
+		};
+		qcom,gpu-pwrlevel@7 {
+			reg = <7>;
 			qcom,gpu-freq = <27000000>;
 			qcom,bus-freq = <0>;
 			qcom,bus-min = <0>;
 			qcom,bus-max = <0>;
 		};
+<<<<<<< HEAD
 		qcom,gpu-pwrlevel@7 {
 			reg = <6>;
+=======
+		qcom,gpu-pwrlevel@8 {
+			reg = <8>;
+>>>>>>> 95b1a85daec... msm8994-v2.dtsi : Add new GPU freq of 100MHz
 			qcom,gpu-freq = <27000000>;
 			qcom,bus-freq = <0>;
 			qcom,bus-min = <0>;
@@ -383,7 +395,7 @@
 	 */
 	qcom,ocmem-bus-client {
                 qcom,msm-bus,name = "gpu-ocmem";
-                qcom,msm-bus,num-cases = <7>;
+                qcom,msm-bus,num-cases = <8>;
                 qcom,msm-bus,num-paths = <1>;
                 qcom,msm-bus,vectors-KBps =
 			<89 662 0 9600000>, /* gpu= 600 */
@@ -392,6 +404,7 @@
 			<89 662 0 6240000>, /* gpu= 390 */
 			<89 662 0 4880000>, /* gpu= 305 */
 			<89 662 0 2880000>, /* gpu= 180 */
+			<89 662 0 1600000>, /* gpu= 100 */
 			<89 662 0 0>;
 	};
 };
