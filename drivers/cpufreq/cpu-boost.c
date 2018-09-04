@@ -171,6 +171,15 @@ static int boost_adjust_notify(struct notifier_block *nb, unsigned long val,
 
 		min = max(b_min, ib_min);
 
+		/*
+		 * If we're not resetting the boost and if the new boosted freq
+		 * is below or equal to the current min freq, bail early
+		 */
+		if (ib_min) {
+			if (ib_min <= policy->min)
+				break;
+		}
+
 		pr_debug("CPU%u policy min before boost: %u kHz\n",
 			 cpu, policy->min);
 		pr_debug("CPU%u boost min: %u kHz\n", cpu, min);
@@ -334,6 +343,7 @@ static int boost_migration_notify(struct notifier_block *nb,
 		return NOTIFY_OK;
 	}
 
+<<<<<<< HEAD
 	if (!load_based_syncs && (mnd->src_cpu == mnd->dest_cpu))
 		return NOTIFY_OK;
 
@@ -353,6 +363,11 @@ static int boost_migration_notify(struct notifier_block *nb,
 	wake_up(&s->sync_wq);
 
 	return NOTIFY_OK;
+=======
+	queue_delayed_work(system_power_efficient_wq,
+		&input_boost_rem, msecs_to_jiffies(
+			input_boost_ms < 1500 ? 1500 : input_boost_ms));
+>>>>>>> a1cfbefea33... cpu-boost: bail early when we're trying to boost to a frequency below of what we're already boosted
 }
 
 static struct notifier_block boost_migration_nb = {
