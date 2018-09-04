@@ -257,10 +257,17 @@ static int boost_mig_sync_thread(void *data)
 		if (kthread_should_stop())
 			break;
 
+<<<<<<< HEAD
 		spin_lock_irqsave(&s->lock, flags);
 		s->pending = false;
 		src_cpu = s->src_cpu;
 		spin_unlock_irqrestore(&s->lock, flags);
+=======
+	if (!cpu_boost_worker_thread)
+		return;
+
+	cancel_delayed_work_sync(&input_boost_rem);
+>>>>>>> 68250b1ebee... cpu-boost: don't try to boost if the thread hasn't been initiated or boom goes the dynamite
 
 		ret = cpufreq_get_policy(&src_policy, src_cpu);
 		if (ret)
