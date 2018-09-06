@@ -252,6 +252,23 @@ config FINGERPRINT_BOOST
 	  Boosts available CPUs to max frequency on fingerprint sensor input.
 
 
+<<<<<<< HEAD
+=======
+config FINGERPRINT_BOOST
+	bool "Fingerprint Boost"
+	default y
+	help
+	  Boosts available CPUs to max frequency on fingerprint sensor input.
+
+config SCREEN_OFF
+	bool "Screen Off Freq limiter"
+	default y
+	help
+		It limits the maximum frequency of the governor (implementation needed)
+		to the value set, when screen is off.
+
+
+>>>>>>> fdbb605a0b3... Introduced a sysfs node to set different maximum frequnecy
 config GENERIC_CPUFREQ_CPU0
 	tristate "Generic CPU0 cpufreq driver"
 	depends on HAVE_CLK && REGULATOR && PM_OPP && OF
@@ -261,6 +278,15 @@ config GENERIC_CPUFREQ_CPU0
 	  systems which share clock and voltage across all CPUs.
 
 	  If in doubt, say N.
+
+config CPU_WAKE_BOOST
+	bool "CPU wake boost"
+	depends on FB
+	help
+	  Boosts all online CPUs to policy->max (scaling_max_freq) when the display
+	  is powered on, as reported by the framebuffer chain notifier. This helps
+	  make the display power on faster, as well as ensures good performance
+	  immediately after powering on the display.
 
 menu "x86 CPU frequency scaling drivers"
 depends on X86

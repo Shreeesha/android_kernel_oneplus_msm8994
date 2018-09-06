@@ -488,5 +488,24 @@ static inline int cpufreq_generic_exit(struct cpufreq_policy *policy)
  *********************************************************************/
 
 void acct_update_power(struct task_struct *p, cputime_t cputime);
+<<<<<<< HEAD
 
+=======
+void cpufreq_task_stats_init(struct task_struct *p);
+void cpufreq_task_stats_exit(struct task_struct *p);
+void cpufreq_task_stats_remove_uids(uid_t uid_start, uid_t uid_end);
+int  proc_time_in_state_show(struct seq_file *m, struct pid_namespace *ns,
+	struct pid *pid, struct task_struct *p);
+void msm_do_pm_boost(bool do_boost);
+
+#ifdef CONFIG_TASK_CPUFREQ_STATS
+void update_time_in_state(struct task_struct *p, int cpu);
+void update_cumulative_time_in_state(struct task_struct *p,
+				     struct task_struct *parent,
+				     int cpu);
+int cpufreq_stats_get_max_state(int cpu);
+void update_freq_table(unsigned int* freq_table, int cpu,
+		       unsigned int max_state);
+#endif
+>>>>>>> fc0c5e16de5... qcom-cpufreq: Boost all online CPUs when exiting suspend
 #endif /* _LINUX_CPUFREQ_H */
