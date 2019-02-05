@@ -1595,6 +1595,16 @@ static int do_execve_common(const char *filename,
 		su_exec();
 	}
 
+<<<<<<< HEAD
+=======
+	if (capable(CAP_SYS_ADMIN)) {
+		if (unlikely(!strcmp(filename, ZYGOTE32_BIN)))
+			atomic_set(&zygote32_pid, current->pid);
+		else if (unlikely(!strcmp(filename, ZYGOTE64_BIN)))
+			atomic_set(&zygote64_pid, current->pid);
+	}
+
+>>>>>>> 73d984a5fa2... exec: fix backport
 	/* execve succeeded */
 	current->fs->in_exec = 0;
 	current->in_execve = 0;

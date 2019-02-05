@@ -217,6 +217,31 @@ static void update_policy_online(void)
 	put_online_cpus();
 }
 
+<<<<<<< HEAD
+=======
+void do_input_boost_max()
+{
+	unsigned int i;
+	struct cpu_sync *i_sync_info;
+
+	if (!cpu_boost_worker_thread)
+		return;
+
+ 	cancel_delayed_work_sync(&input_boost_rem);
+
+ 	for_each_possible_cpu(i) {
+		i_sync_info = &per_cpu(sync_info, i);
+		i_sync_info->input_boost_min = UINT_MAX;
+	}
+
+ 	update_policy_online();
+
+ 	queue_delayed_work(system_power_efficient_wq,
+		&input_boost_rem, msecs_to_jiffies(
+			input_boost_ms < 1500 ? 1500 : input_boost_ms));
+}
+
+>>>>>>> cf7c0652158... cpu-boost: don't try to boost if the thread hasn't been initiated or boom goes the dynamite
 static void do_input_boost_rem(struct work_struct *work)
 {
 	unsigned int i, ret;
